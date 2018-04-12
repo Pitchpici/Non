@@ -1,0 +1,67 @@
+body {
+	color: white;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+header {
+	margin: -35px 0px;
+	font-size: 50px;
+	padding: 20px 0px;
+	/*border: 2px solid black;*/
+}
+
+.page-footer {
+
+   position:absolute;
+   bottom:0;
+   width:100%;
+  /* margin-bottom: -150px;*/
+ }
+
+.fonto { 
+	font-family: 'Meddon', cursive, serif; 
+}
+
+
+.nav-wrapper {
+	margin-bottom: -50px;
+}
+
+#side {
+	background-color: gray;
+	height: 500px;
+	/*color: white;*/
+}
+.selection {
+	margin: 20px;
+}
+
+img, .selection:hover {
+	border: 5px solid yellow;
+	border-radius: 25px;
+}
+
+#main {
+	background-color: yellow;
+	height: 500px;
+}
+#search {
+	background-color: white;
+	color: gray;
+}
+
+/*register middle section*/
+h3 {
+  color: black;
+}
+.button {
+  width: 150px !important;
+  height: 150px !important;
+}
+#login, #register, #password {
+	color: black;
+}
+
