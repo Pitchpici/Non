@@ -5,33 +5,69 @@
 
 
 	<div class = "container">
-		<h3>Registration form</h3>
+		
+	 	<div class="row">
+			<div class="col l6">
+				<h3>Registration form</h3>
+			</div>	
 
-		<form id="register" method="POST" action ="/register">
-		     <div class="row">
+	        <div class="col l2 offset-l4">
+	        	{{#if errors}}
+			
+					<!-- Modal Trigger -->
+	 				<a class="waves-effect waves-light btn-floating btn-large red" href="#errors"><i class="material-icons">add</i></a>
+
+	 				<!-- Modal Structure -->
+	 				<div id="errors" class="modal">
+	  					  <div class="modal-content">
+	   				 	 	 <h4>Alert</h4>
+	   				  	 	 <p>Incorrect information input will refresh this page!</p>
+	   					 </div>
+	   			
+	   					 <div class="modal-footer">
+	  			   		 	<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+	  					  </div>
+	 				</div>
+
+				{{/if}}	
+	  		</div>	
+	   </div>
+
+
+		<form id="register" method="POST" action ="/users/register">
+		    <div class="row">
 		            <div class="input-field col s6 offset-s3">
 		                <i class="material-icons prefix">account_circle</i>
 		                <input id="username" type="text" class="validate" name="username">
-		                <label for="username">Username</label>
+		                <label class="active" for="username">Username</label>
 		            </div>
-		      </div>
+		    </div>
+		    
+		    <div class="row">
+		            <div class="input-field col s6 offset-s3">
+		                <i class="material-icons prefix">account_circle</i>
+		                <input id="email" type="text" class="validate" name="email">
+		                <label class="active" for="email">Email</label>
+		            </div>
+		    </div>
 		    
 
-		        <div class="row">
+
+		    <div class="row">
 		            <div class="input-field col s6 offset-s3">
 		                <i class="material-icons prefix">edit</i>
 		                <input id="password" type="text" class="validate" name="password">
-		                <label for="password">Password</label>
+		                <label class="active" for="password">Password</label>
 		            </div>
-		      </div>  
+		    </div>  
 
-		      <div class="row">
+		    <div class="row">
 		        <div class="col s6 offset-s3">
 		          <button class="btn waves-effect waves-light" type="submit" name="action">Submit
 		              <i class="material-icons right">send</i>
 		          </button>
 		        </div>  
-		      </div>  
+		    </div>  
 
 		<form>        
         

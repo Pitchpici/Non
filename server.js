@@ -9,6 +9,7 @@ var session          = require('express-session');
 var MySQLStore       = require('express-mysql-session')(session);
 var passport         = require('passport');
 var LocalStrategy    = require('passport-local').Strategy;
+var flash            = require('flash');
 
 var db = require("./models");
 
@@ -29,7 +30,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
 
 //express-sessions-MySQL
- 
 var options = {
     host: '127.0.0.1',
     port: 3306,
@@ -53,7 +53,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Express Validator
+// Express Validator - copied from Github :)
 app.use(expressValidator({
   errorFormatter: function(param, msg, value) {
       var namespace = param.split('.')
@@ -71,12 +71,25 @@ app.use(expressValidator({
   }
 }));
 
+//flash middleware - run flash install!!!!!!!!!!!!!!!!!!!!!!! (you haven't yet)
+app.use(flash());
+//flash global variables
+app.use(function(req, res, next) {
+	res.locals.success_msg = req.flash("Success!");
+	res.locals.error_msg = req.flash("Error - wah wah!");
+	res.locals.error = req.flash("Error!");
+	next();
+});
+
 
 //require routes!!!
-require("./routes/index.js")(app, passport);
+var routes = require("./routes/index.js");
+var users  = require("./routes/users.js");
 
-//load passport strategies
-require('./config/passport/passport.js')(passport,db.User);
+//new routes 
+app.use("/", routes);
+app.use("/users", users);
+
 
 
 

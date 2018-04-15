@@ -64,4 +64,7 @@ h3 {
 #login, #register, #password {
 	color: black;
 }
+#errors {
+	color: black;
+}
 
