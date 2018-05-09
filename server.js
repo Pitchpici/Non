@@ -10,7 +10,10 @@ var MySQLStore       = require('express-mysql-session')(session);
 var passport         = require('passport');
 var LocalStrategy    = require('passport-local').Strategy;
 var flash            = require('flash');
-
+//a couple of new additions by AT
+var fs = require("fs");
+// var httpRoutes = require("./routes/httpRoutes");
+// var apiRoutes = require("./routes/apiRoutes");
 var db = require("./models");
 
 var PORT = process.env.PORT || 8080;
@@ -31,10 +34,10 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 //express-sessions-MySQL
 var options = {
-    host: '127.0.0.1',
+    host: 'localhost',
     port: 3306,
     user: 'root',
-    password: '',
+    password: 'root',
     database: 'nontoxx_db'
 };
 
@@ -89,13 +92,16 @@ var users  = require("./routes/users.js");
 //new routes 
 app.use("/", routes);
 app.use("/users", users);
-
+// app.use(httpRoutes);
+// app.use("/api", apiRoutes);
 
 
 
 db.sequelize.sync().then(function () {
-	console.log("Database is connected;")
-	app.listen(PORT, function (){
-		console.log("listening on port %s " + PORT);
-	});
+	console.log("Database is connected");
+}).catch(err => {
+    console.log("Failed to connect to Database.", err);
+});
+var server = app.listen(PORT, function (){
+		console.log("Listening on port " + PORT);
 });
