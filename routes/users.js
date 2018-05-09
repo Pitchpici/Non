@@ -166,10 +166,7 @@ passport.use('local', new LocalStrategy(
 
 
 
-router.post("/login", passport.authenticate ("local",   { successRedirect: "/users/mainpage", 
-														  failureRedirect: "/users/login", 
-														  failureFlash: true
-													    }), 
+router.post("/login", passport.authenticate ("local",   { successRedirect: "/users/mainpage", failureRedirect: "/users/login", failureFlash: true}), 
  function(req, res) {
 
  	console.log("post login ======> " + req.body);

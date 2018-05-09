@@ -3,94 +3,92 @@
  	<div class="col s6 offset-s3">
 		 <a href='/users/logout' class="btn waves-effect waves-light" type="submit" name="action" >Logout
 		    <i class="material-icons right">send</i></a>
+				<main>
+					<div id="demo" class="row">
+				  		<div class="col-lg-8 col-lg-offset-2 text-center">
+				        	<div class="col-lg-4">
+				          		<label class="sr-only" for="drugname">Title:</label>
+				          		<input type="text" class="form-control" id="drugname" placeholder="Title">
+				        	</div>
+				        
+				        	<button class="btn btn-default" id="run-search">Submit</button>
+				        	<button class="btn btn-default" id="clear-all">Clear</button>
+				  		</div>
 
-			<main>
-				<div id="demo" class="row">
-			  		<div class="col-lg-8 col-lg-offset-2 text-center">
-			        	<div class="col-lg-4">
-			          		<label class="sr-only" for="drugname">Title:</label>
-			          		<input type="text" class="form-control" id="drugname" placeholder="Title">
-			        	</div>
-			        
-			        	<button class="btn btn-default" id="run-search">Submit</button>
-			        	<button class="btn btn-default" id="clear-all">Clear</button>
-			  		</div>
-
-			  		<div class="col-lg-8 col-lg-offset-2 text-center">
-			      		<h2> <span id="output"></span></h2>
-			  		</div>
+				  		<div class="col-lg-8 col-lg-offset-2 text-center">
+				      		<h2> <span id="output"></span></h2>
+				  		</div>
 
 
-				<footer class="page-footer footer-copyright #283593 indigo darken-3">
-					<div class="container">
-						<h5 class="center-align"><strong>Copyright &copy; The NonToxx</strong></h5>
-					</div>
-				</footer>
-			</main>
+					<footer class="page-footer footer-copyright #283593 indigo darken-3">
+						<div class="container">
+							<h5 class="center-align"><strong>Copyright &copy; The NonToxx</strong></h5>
+						</div>
+					</footer>
+				</main>
+	</div>	    
+ </div>
 
-			<script src="https://code.jquery.com/jquery.js"></script>
+ <script src="https://code.jquery.com/jquery.js"></script>
 
-			<!-- Javascript for taking data from the page and interacting with OpenFDA API -->
-			<script type = "text/javascript">
-		    	$("#run-search").click(function(){
-					var brand_name = $("#drugname").val();
-					//use search parameter to specify what field the API needs to search for
-					var queryString = 'https://api.fda.gov/drug/event.json?search=brand_name=' + brand_name;
-					console.log(queryString);
-					//Functions
+<!-- Javascript for taking data from the page and interacting with OpenFDA API -->
+<script type = "text/javascript">
+	$("#run-search").click(function(){
+		var brand_name = $("#drugname").val();
+		//use search parameter to specify what field the API needs to search for
+		var queryString = 'https://api.fda.gov/drug/event.json?search=brand_name=' + brand_name;
+		console.log(queryString);
+		//Functions
 
+		$.ajax({
+			url: queryString,
+			method: "GET"
+		}).done(function(response){
+
+
+			if (response.length < 1){
+			$("#output").html("Sorry, no drug like that was found :(");
+			}
+			else{
+				$("#output").html("The chemical name of this brand name medication is:" + "<br>");
+				var chemName = response.results[0].patient.drug[0].openfda.generic_name.forEach(function(element) {
+					// var ending = element.reactionmeddrapt;
+					console.log(element);
+					var newSearch = element;
+					console.log(newSearch);
+				
+					
+					$("#output").append("<br>" + element + "<br>");
+					$("#output").append("<br>" + "The most common reported side effects of this medication substance are:" + "<br>")
+
+					var sideEffects = response.results[0].patient.reaction.forEach(function(element) {
+						var ending = element.reactionmeddrapt;
+						console.log(ending);
+
+						$("#output").append("<br>" + ending + "<br>");
+					});
+					$("#output").append("<br>" + "Here are medications that contain this active substance:" +"<br>");
+					queryString = 'https://api.fda.gov/drug/event.json?search=generic_name=' + newSearch;
 					$.ajax({
 						url: queryString,
 						method: "GET"
-					}).done(function(response){
-			
-
-						if (response.length < 1){
-						$("#output").html("Sorry, no drug like that was found :(");
-						}
-						else{
-							$("#output").html("The chemical name of this brand name medication is:" + "<br>");
-							var chemName = response.results[0].patient.drug[0].openfda.generic_name.forEach(function(element) {
-								// var ending = element.reactionmeddrapt;
-								console.log(element);
-								var newSearch = element;
-								console.log(newSearch);
-							
-								
-								$("#output").append("<br>" + element + "<br>");
-								$("#output").append("<br>" + "The most common reported side effects of this medication substance are:" + "<br>")
-
-								var sideEffects = response.results[0].patient.reaction.forEach(function(element) {
-									var ending = element.reactionmeddrapt;
-									console.log(ending);
-
-									$("#output").append("<br>" + ending + "<br>");
-								});
-								$("#output").append("<br>" + "Here are medications that contain this active substance:" +"<br>");
-								queryString = 'https://api.fda.gov/drug/event.json?search=generic_name=' + newSearch;
-								$.ajax({
-									url: queryString,
-									method: "GET"
-								}).done(function(response) {
+					}).done(function(response) {
 
 
-									var meds = response.results[0].patient.drug.forEach(function(element) {
-										console.log(element);
-										var sug = element.openfda.brand_name[0];
-										console.log(sug);
-									
-										$("#output").append("<br>" + sug + "<br>");
-									});
-								});	
-							});		
-		    			} 
-					});
-				});
+						var meds = response.results[0].patient.drug.forEach(function(element) {
+							console.log(element);
+							var sug = element.openfda.brand_name[0];
+							console.log(sug);
+						
+							$("#output").append("<br>" + sug + "<br>");
+						});
+					});	
+				});		
+			} 
+		});
+	});
 
-				$("#clear-all").on("click", function() {
-				  $("#output").empty();
-				});
-			</script>
-	</div>	    
- </div>
-        
+	$("#clear-all").on("click", function() {
+	  $("#output").empty();
+	});
+</script>
